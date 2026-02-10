@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.js"
+      "dest": "/server.js"
     }
   ],
   "env": {
@@ -19,12 +19,5 @@
     "DB_NAME": "openmd",
     "DB_USER": "openmd",
     "DB_PASSWORD": "eo0IGu59U86SzEyl"
-  },
-  "functions": {
-    "api/index.js": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  },
-  "buildCommand": "npm install"
+  }
 }
