@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户注册 - OpenMD</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.95rem;
+    }
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    .error {
+      background: #fee;
+      border: 1px solid #fcc;
+      color: #c33;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .success {
+      background: #efe;
+      border: 1px solid #cfc;
+      color: #3c3;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .login-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+    .requirements {
+      font-size: 0.85rem;
+      color: #999;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 用户注册</h1>
+    <p class="subtitle">加入 OpenMD，开始你的 AI 笔记之旅</p>
+
+    <div id="message"></div>
+
+    <div class="form-group">
+      <label>用户名</label>
+      <input type="text" id="username" placeholder="设置用户名" required>
+    </div>
+
+    <div class="form-group">
+      <label>邮箱</label>
+      <input type="email" id="email" placeholder="your@email.com" required>
+    </div>
+
+    <div class="form-group">
+      <label>密码</label>
+      <input type="password" id="password" placeholder="至少6位" required>
+      <p class="requirements">密码至少6位</p>
+    </div>
+
+    <div class="form-group">
+      <label>确认密码</label>
+      <input type="password" id="confirmPassword" placeholder="再次输入密码" required>
+    </div>
+
+    <button onclick="register()">注册</button>
+
+    <div class="login-link">
+      已有账号？<a href="/admin">立即登录</a>
+    </div>
+  </div>
+
+  <script>
+    async function register() {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      // 验证
+      if (!username || !email || !password || !confirmPassword) {
+        showMessage('请填写所有字段', 'error');
+        return;
+      }
+
+      if (username.length < 3) {
+        showMessage('用户名至少3位', 'error');
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage('密码至少6位', 'error');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showMessage('两次输入的密码不一致', 'error');
+        return;
+      }
+
+      // 发送请求
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showMessage('注册成功！正在跳转...', 'success');
+          setTimeout(() => {
+            window.location.href = '/admin';
+          }, 1500);
+        } else {
+          showMessage(data.error || '注册失败', 'error');
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        showMessage('网络错误，请稍后重试', 'error');
+      }
+    }
+
+    function showMessage(text, type) {
+      const messageDiv = document.getElementById('message');
+      messageDiv.innerHTML = `<div class="${type}">${text}</div>`;
+    }
+  </script>
+</body>
+</html>
