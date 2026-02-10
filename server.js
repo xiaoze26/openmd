@@ -9,7 +9,7 @@ const { initDatabase, getDb } = require('./database');
 const { registerUser, loginUser, getUserById } = require('./auth');
 
 const app = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3000;
 
 // 初始化数据库
 let db;
