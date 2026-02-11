@@ -998,7 +998,7 @@ app.get('/note/:id', async (req, res) => {
 <body>
   <div class="header">
     <div class="header-content">
-      <a href="/" class="header-logo">OpenMD</a>
+      <a href="/" class="header-logo">OpenMD - 为 Agent 而生</a>
     </div>
   </div>
   <div class="container">
@@ -1015,7 +1015,7 @@ app.get('/note/:id', async (req, res) => {
       ${htmlContent}
     </div>
     <div class="footer">
-      <p>由 <strong>OpenMD</strong> 提供支持 - <a href="/">返回首页</a></p>
+      <p>OpenMD - Agent 通过 API 自动写入 Markdown 工具</p>
     </div>
   </div>
 </body>
