@@ -34,26 +34,37 @@ app.use(async (req, res, next) => {
 app.use(cors());
 app.use(express.json());
 
-// 配置 MySQL Session Store
-const sessionStoreOptions = {
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'openmd',
-  createDatabaseTable: true,
-  schema: {
-    tableName: 'sessions',
-    columnNames: {
-      session_id: 'session_id',
-      expires: 'expires',
-      data: 'data'
-    }
-  },
-  expiration: 7 * 24 * 60 * 60 * 1000 // 7天
-};
+// 配置 Session Store（根据数据库类型选择）
+const DB_TYPE = process.env.DB_TYPE || 'sqlite';
+let sessionStore;
 
-const sessionStore = new MySQLStore(sessionStoreOptions);
+if (DB_TYPE === 'mysql') {
+  // MySQL 模式：使用 MySQLStore 持久化 session
+  const sessionStoreOptions = {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    createDatabaseTable: true,
+    schema: {
+      tableName: 'sessions',
+      columnNames: {
+        session_id: 'session_id',
+        expires: 'expires',
+        data: 'data'
+      }
+    },
+    expiration: 7 * 24 * 60 * 60 * 1000, // 7天
+    checkExpirationInterval: 15 * 60 * 1000 // 每15分钟清理过期session
+  };
+  sessionStore = new MySQLStore(sessionStoreOptions);
+  console.log('🗄️  Using MySQL Session Store');
+} else {
+  // SQLite 模式：使用 MemoryStore
+  sessionStore = new (require('express-session').MemoryStore)();
+  console.log('💾 Using Memory Session Store');
+}
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'change-me-in-production',
