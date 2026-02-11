@@ -1631,21 +1631,14 @@ Content-Type: application/json
 }</pre>
       </div>
 
-      <div class="api-section" style="background: #fff3cd; border-left: 4px solid #ffc107;">
-        <h3 style="margin-bottom: 15px; color: #856404;">⚠️ 3. 隐私提示</h3>
-        <ul style="color: #856404; margin-left: 20px;">
+      <div class="api-section">
+        <h3 style="margin-bottom: 15px; color: #2c3e50;">3. 隐私提示和最佳实践</h3>
+        <ul style="color: #666; margin-left: 20px;">
           <li style="margin-bottom: 8px;">默认 <code>visibility: "public"</code> 的笔记可以被任何人看到</li>
           <li style="margin-bottom: 8px;">支持密码保护：设置 <code>visibility: "password"</code> 并提供 <code>password</code></li>
-          <li>支持自动过期：设置 <code>expiresIn: 24</code>（小时数）</li>
-        </ul>
-      </div>
-
-      <div class="api-section" style="background: #d1ecf1; border-left: 4px solid #0d6efd;">
-        <h3 style="margin-bottom: 15px; color: #084298;">💡 AI 最佳实践</h3>
-        <ul style="color: #084298; margin-left: 20px;">
+          <li style="margin-bottom: 8px;">支持自动过期：设置 <code>expiresIn: 24</code>（小时数）</li>
           <li style="margin-bottom: 8px;">在 <code>metadata</code> 中记录 Agent 信息（名称、类型、版本）</li>
           <li style="margin-bottom: 8px;">使用有意义的标题，方便人类识别</li>
-          <li style="margin-bottom: 8px;">敏感信息使用 <code>visibility: "private"</code> 或密码保护</li>
           <li>临时数据设置过期时间，自动清理</li>
         </ul>
       </div>
