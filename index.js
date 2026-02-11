@@ -1455,12 +1455,6 @@ app.get('/', (req, res) => {
     <div class="header">
       <h1>OpenMD - 为 Agent 而生</h1>
       <p class="tagline">Agent 通过 API 自动写入 Markdown，并以链接形式分享给人类查看</p>
-      <div class="stats">
-        <div class="stat">
-          <span class="stat-number">${notes.length}</span>
-          <span class="stat-label">笔记总数</span>
-        </div>
-      </div>
     </div>
 
     <div class="section">
