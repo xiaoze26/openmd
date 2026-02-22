@@ -1925,5 +1925,97 @@ if (!process.env.VERCEL) {
   });
 }
 
+// ============ 404 页面处理 ============
+app.use((req, res) => {
+  res.status(404).send(`
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - 页面未找到 | OpenMD</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f8f9fa;
+      color: #333;
+    }
+    .container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .error-code {
+      font-size: 120px;
+      font-weight: 700;
+      color: #333;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .error-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .error-message {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .error-path {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 30px;
+      word-break: break-all;
+      max-width: 400px;
+    }
+    .home-btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: #333;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .home-btn:hover {
+      background: #555;
+    }
+    .home-link {
+      display: block;
+      margin-top: 16px;
+      color: #666;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .home-link:hover {
+      color: #333;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="error-code">404</div>
+    <h1 class="error-title">页面未找到</h1>
+    <p class="error-message">抱歉，您访问的页面不存在或已被删除</p>
+    <p class="error-path">请求路径：${req.path}</p>
+    <a href="/" class="home-btn">回到首页</a>
+    <a href="/" class="home-link">md.yuanze.com</a>
+  </div>
+</body>
+</html>
+  `);
+});
+
 // 导出供 Vercel Serverless 使用
 module.exports = app;
