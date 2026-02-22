@@ -20,6 +20,25 @@
 
 ## 📅 2026-02-22
 
+### 🐛 修复：补充 SESSION_SECRET 环境变量
+
+**核心变更**: 补充 Vercel 缺失的 SESSION_SECRET 环境变量
+
+**原因**:
+- 2026-02-11 安全修复时，代码改为从环境变量读取 SESSION_SECRET
+- 但当时忘记在 Vercel 添加该环境变量
+- 导致数据库连接失败，返回 500 错误
+
+**修复步骤**:
+1. 诊断：API 返回 `{"error":"Database initialization failed"}`
+2. 检查 Vercel 环境变量，发现 SESSION_SECRET 缺失
+3. 通过 Vercel API 添加环境变量
+4. 触发重新部署
+
+**教训**: 环境变量修改后必须立即验证，不能只靠文档记录
+
+---
+
 ### ✨ 功能：添加 404 页面
 
 **核心变更**: 添加友好的 404 错误页面
@@ -292,7 +311,7 @@ curl -X PUT https://md.yuanze.com/api/notes/1 \
 | `DB_NAME` | ✅ | openmd |
 | `DB_USER` | ✅ | 已加密配置 |
 | `DB_PASSWORD` | ✅ | 已加密配置 |
-| `SESSION_SECRET` | ✅ | 已加密配置 |
+| `SESSION_SECRET` | ✅ | 2026-02-22 补充配置 |
 
 ### 本地开发环境变量
 
